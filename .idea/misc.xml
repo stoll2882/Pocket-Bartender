@@ -3,7 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/drawable/Find Drinks_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/drawable/browse_drinks_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/drawable/find_drinks_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/drawable/home_foreground.xml" value="0.18020833333333333" />
         <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/layout/activity_main.xml" value="0.268" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/layout/fragment_browse_drinks.xml" value="0.268" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/layout/fragment_find_drinks.xml" value="0.1" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/layout/fragment_home.xml" value="0.3" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/samso/OneDrive/Desktop/Android/PocketBartender/app/src/main/res/mipmap-anydpi-v26/browse drinks.xml" value="0.1" />
       </map>
     </option>
   </component>
