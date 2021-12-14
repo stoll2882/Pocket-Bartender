@@ -13,6 +13,12 @@ public class Drink {
         ingredients = null;
     }
 
+    public Drink(String name)
+    {
+        this.name = name;
+        this.ingredients = null;
+    }
+
     public Drink(String name, ArrayList<String> ingredients) {
         this.ingredients = ingredients;
         this.name = name;
