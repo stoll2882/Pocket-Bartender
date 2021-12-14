@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.SparseBooleanArray;
@@ -58,6 +59,7 @@ public class FindDrinksFragment extends Fragment {
     protected ArrayList<String> ingredientList;
     protected ArrayList<String> selectedIngredients;
     private ArrayAdapter<String> ingredientsAdapter;
+    CustomAdapter adapter = new CustomAdapter();
 
     Button searchButton;
 
@@ -90,6 +92,14 @@ public class FindDrinksFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        Drink drink1 = new Drink("drink1");
+        Drink drink2 = new Drink("drink2");
+        Drink drink3 = new Drink("drink3");
+        drinkList.add(drink1);
+        drinkList.add(drink2);
+        drinkList.add(drink3);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -121,6 +131,12 @@ public class FindDrinksFragment extends Fragment {
 
             }
         });
+        RecyclerView recyclerView = view.findViewById(R.id.possibleDrinksView);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(adapter);
     }
 
     private void getIngredientsList() {
@@ -238,7 +254,7 @@ public class FindDrinksFragment extends Fragment {
         @NonNull
         @Override
         public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(FindDrinksFragment.this)
+            View view = LayoutInflater.from(getActivity())
                     .inflate(R.layout.card_view_list_item, parent, false);
             return new CustomViewHolder(view);
         }
