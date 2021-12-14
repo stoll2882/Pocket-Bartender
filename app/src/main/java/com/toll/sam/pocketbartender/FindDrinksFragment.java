@@ -2,11 +2,19 @@ package com.toll.sam.pocketbartender;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +25,8 @@ public class FindDrinksFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String TAG = "FindDrinksTAG";
+    private List<Drink> drinkList = new ArrayList<>();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -52,6 +62,100 @@ public class FindDrinksFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
+            boolean multiSelect = false;
+            ActionMode actionMode;
+            ActionMode.Callback callbacks;
+            List<Drink> selectedItems = new ArrayList<>(); // the list of currently selected items in CAM
+
+            /*
+             * handles click events for each view in the recycler view
+             *
+             * @param n/a
+             * @return n/a
+             */
+            class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+                CardView myCardView1;
+                TextView myText1;
+
+                /*
+                 * constructor for each view in recycler view
+                 *
+                 * @param the view
+                 * @return an item in the recycler view
+                 */
+                public CustomViewHolder(@NonNull View itemView) {
+                    super(itemView);
+
+                    myCardView1 = itemView.findViewById(R.id.myCardView1);
+                    myText1 = itemView.findViewById(R.id.myText1);
+
+                    // wire 'em up!!
+                    itemView.setOnClickListener(this);
+                }
+                /*
+                 * updates the view in the recycler view
+                 *
+                 * @param the respective video in the list
+                 * @return none
+                 */
+                public void updateView(Drink d) {
+                    myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
+                    myText1.setText(d.getName());
+                }
+
+                /*
+                 * makes its so the user can select an item
+                 *
+                 * @param the respective video
+                 * @return a selected video
+                 */
+                public void selectItem(Drink d) {
+                    if (multiSelect) {
+                        if (selectedItems.contains(d)) {
+                            selectedItems.remove(d);
+                            myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
+                        } else {
+                            selectedItems.add(d);
+                            myCardView1.setCardBackgroundColor(getResources().getColor(R.color.teal_200));
+                        }
+                        actionMode.setTitle(selectedItems.size() + " item(s) selected");
+                    }
+                }
+            }
+
+            /*
+             * inflates the card view
+             *
+             * @param the viewgroup parent aka recyclerview
+             * @return an inflated view
+             */
+            @NonNull
+            @Override
+            public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(FindDrinksFragment.this)
+                        .inflate(R.layout.card_view_list_item, parent, false);
+                return new CustomViewHolder(view);
+            }
+
+            /*
+             * both under here are required in the class
+             *
+             * @param n/a
+             * @return n/a
+             */
+            @Override
+            public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+                Drink d = drinkList.get(position);
+                holder.updateView(d);
+            }
+
+            @Override
+            public int getItemCount() {
+                return drinkList.size();
+            }
         }
     }
 
