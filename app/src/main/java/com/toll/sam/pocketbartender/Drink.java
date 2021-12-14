@@ -4,12 +4,26 @@ import java.util.ArrayList;
 
 public class Drink {
 
+    private String name;
     private ArrayList<String> ingredients = new ArrayList<>();
 
-    public Drink() { }
+    public Drink()
+    {
+        this.name = "";
+        ingredients = null;
+    }
 
-    public Drink(ArrayList<String> ingredients) {
+    public Drink(String name, ArrayList<String> ingredients) {
         this.ingredients = ingredients;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void addIngredient(String ingredient)
