@@ -29,11 +29,12 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class BrowseDrinksFragment extends Fragment {
-
+    private static final String TAG = "BrowseDrinksTAG";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    List<Drink> drinkList = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -108,7 +109,6 @@ public class BrowseDrinksFragment extends Fragment {
 
                     myCardView1 = itemView.findViewById(R.id.myCardView1);
                     myText1 = itemView.findViewById(R.id.myText1);
-                    myImage1 = itemView.findViewById(R.id.myImage1);
 
                     // wire 'em up!!
                     itemView.setOnClickListener(this);
@@ -120,10 +120,9 @@ public class BrowseDrinksFragment extends Fragment {
                  * @param the respective video in the list
                  * @return none
                  */
-                public void updateView(Video v) {
+                public void updateView(Drink d) {
                     myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
-                    myText1.setText(v.getTitle());
-                    myImage1.setImageResource(v.getPosterId());
+                    myText1.setText(d.getName());
                 }
 
                 /*
@@ -132,38 +131,17 @@ public class BrowseDrinksFragment extends Fragment {
                  * @param the respective video
                  * @return a selected video
                  */
-                public void selectItem(Video v) {
+                public void selectItem(Drink d) {
                     if (multiSelect) {
-                        if (selectedItems.contains(v)) {
-                            selectedItems.remove(v);
+                        if (selectedItems.contains(d)) {
+                            selectedItems.remove(d);
                             myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
                         } else {
-                            selectedItems.add(v);
+                            selectedItems.add(d);
                             myCardView1.setCardBackgroundColor(getResources().getColor(R.color.teal_200));
                         }
                         actionMode.setTitle(selectedItems.size() + " item(s) selected");
                     }
-                }
-
-                /*
-                 * click listener for each view in the recycler view
-                 *
-                 * @param the selected view
-                 * @return launches the VideoDetailActivity
-                 */
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: ");
-                    selectItem(videosList.get(getAdapterPosition()));
-                    Intent intent = new Intent(MainActivity.this, VideoDetailActivity.class);
-
-                    intent.putExtra("watched", videosList.get(getAdapterPosition()).getWatched());
-                    intent.putExtra("title", videosList.get(getAdapterPosition()).getTitle());
-                    intent.putExtra("type", videosList.get(getAdapterPosition()).getType());
-                    intent.putExtra("posterId", videosList.get(getAdapterPosition()).getPosterId());
-
-                    intent.putExtra("editOrNew", getAdapterPosition());
-                    launcher.launch(intent);
                 }
             }
 
@@ -176,7 +154,7 @@ public class BrowseDrinksFragment extends Fragment {
             @NonNull
             @Override
             public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(MainActivity.this)
+                View view = LayoutInflater.from(BrowseDrinksFragment.this)
                         .inflate(R.layout.card_view_list_item, parent, false);
                 return new CustomViewHolder(view);
             }
@@ -189,13 +167,13 @@ public class BrowseDrinksFragment extends Fragment {
              */
             @Override
             public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-                Video v = videosList.get(position);
-                holder.updateView(v);
+                Drink d = drinkList.get(position);
+                holder.updateView(d);
             }
 
             @Override
             public int getItemCount() {
-                return videosList.size();
+                return drinkList.size();
             }
         }
     }
