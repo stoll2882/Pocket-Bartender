@@ -6,6 +6,9 @@ public class Drink {
 
     private String name;
     private ArrayList<String> ingredients = new ArrayList<>();
+    private String instructions;
+    private String alcoholic;
+    private String imageReference;
 
     public Drink()
     {
@@ -22,6 +25,27 @@ public class Drink {
     public Drink(String name, ArrayList<String> ingredients) {
         this.ingredients = ingredients;
         this.name = name;
+    }
+
+    public Drink(String name, ArrayList<String> ingredients, String instructions) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+    }
+
+    public Drink(String name, ArrayList<String> ingredients, String instructions, String alcoholic) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+        this.alcoholic = alcoholic;
+    }
+
+    public Drink(String name, ArrayList<String> ingredients, String instructions, String alcoholic, String imageReference) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+        this.alcoholic = alcoholic;
+        this.imageReference = imageReference;
     }
 
     public String getName() {
