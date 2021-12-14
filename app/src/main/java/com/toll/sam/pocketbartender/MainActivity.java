@@ -44,22 +44,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         createNotificationChannel();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        Button notifyButton = findViewById(R.id.notifyButton);
-        notifyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendNotification();
-            }
-        });
-
-        Button getDrinkButton = findViewById(R.id.getDrinkButton);
-        getDrinkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDrink();
-            }
-        });
+//        Button notifyButton = findViewById(R.id.notifyButton);
+//        notifyButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sendNotification();
+//            }
+//        });
+//
+//        Button getDrinkButton = findViewById(R.id.getDrinkButton);
+//        getDrinkButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getDrink();
+//            }
+//        });
     }
 
     @Override
