@@ -62,25 +62,15 @@ public class BrowseDrinksFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        //listView = view.findViewById(R.id.ingredientsList);
-        //ingredientList = new ArrayList<>();
-        //ingredientsAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),  android.R.layout.simple_list_item_multiple_choice, ingredientList);
-        //listView.setAdapter(ingredientsAdapter);
-
         RecyclerView recyclerView = view.findViewById(R.id.drinkList);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        //CustomAdapter adapter = new CustomAdapter();
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //inflate layout here?
-        //setContentView(R.layout.fragment_browse_drinks);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);

@@ -136,7 +136,6 @@ public class FindDrinksFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        //CustomAdapter adapter = new CustomAdapter();
         recyclerView.setAdapter(adapter);
     }
 
