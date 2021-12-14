@@ -238,7 +238,7 @@ public class FindDrinksFragment extends Fragment {
         @NonNull
         @Override
         public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(FindDrinksFragment.this)
+            View view = LayoutInflater.from(getActivity())
                     .inflate(R.layout.card_view_list_item, parent, false);
             return new CustomViewHolder(view);
         }

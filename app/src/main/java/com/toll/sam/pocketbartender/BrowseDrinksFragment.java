@@ -3,12 +3,19 @@ package com.toll.sam.pocketbartender;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +32,7 @@ public class BrowseDrinksFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private List<Drink> drinkList = new ArrayList<>();
     public BrowseDrinksFragment() {
         // Required empty public constructor
     }
@@ -58,7 +65,7 @@ public class BrowseDrinksFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
+        /*
         //not sure where to put this
         Button refreshButton = findViewById(R.id.refreshButton);
         refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +74,7 @@ public class BrowseDrinksFragment extends Fragment {
                 //make a request for more drinks to fill recycler view
             }
         });
-
+        */
         class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
             boolean multiSelect = false;
             ActionMode actionMode;
@@ -104,6 +111,13 @@ public class BrowseDrinksFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //open up the drink and display all the needed ingredients?
+                }
+
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    //do nothing?
+                    return true;
                 }
 
                 /*
@@ -146,7 +160,7 @@ public class BrowseDrinksFragment extends Fragment {
             @NonNull
             @Override
             public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(MainActivity.this)
+                View view = LayoutInflater.from(getActivity())
                         .inflate(R.layout.card_view_list_item, parent, false);
                 return new CustomViewHolder(view);
             }
