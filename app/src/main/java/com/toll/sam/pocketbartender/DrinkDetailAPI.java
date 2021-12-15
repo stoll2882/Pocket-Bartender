@@ -37,7 +37,7 @@ public class DrinkDetailAPI {
     // Parameters: location, keyword
     // Return: none
     // starts async task to fetch nearby places
-    public void fetchDrinks(String name) throws MalformedURLException {
+    public void fetchDrink(String name) throws MalformedURLException {
         String drinksURL = "www.thecocktaildb.com/api/json/v1/1/search.php?s=" + name;
 
         DrinkDetailAPI.FetchSingleDrinkAsyncTask asyncTask = new DrinkDetailAPI.FetchSingleDrinkAsyncTask();
@@ -62,7 +62,7 @@ public class DrinkDetailAPI {
         @Override
         protected void onPostExecute(Drink drink) {
             super.onPostExecute(drink);
-            //findDrinksFragment.receivedDrinks(drinks);
+            drinkDetailActivity.receivedDrink(drink);
             ProgressBar progressBar = drinkDetailActivity.findViewById(R.id.progressBar2);
             progressBar.setVisibility(View.GONE);
         }
@@ -91,7 +91,20 @@ public class DrinkDetailAPI {
                 Log.d(TAG, "DETAILS: " + jsonResult);
 
                 JSONObject jsonObject = new JSONObject(jsonResult);
-                //JSONArray drinksArray = jsonObject.getJSONArray("drinks");
+                String name = jsonObject.getString("strDrink");
+                String instructions = jsonObject.getString("strInstructions");
+                String alcoholic = jsonObject.getString("strAlcoholic");
+                ArrayList<String> ingredients = new ArrayList<>();
+                int i = 1;
+                while (!jsonObject.getString("strIngredient" + i).equals("null"))
+                {
+                    ingredients.add(jsonObject.getString("strIngredient" + i));
+                }
+
+                drink.setName(name);
+                drink.setIngredients(ingredients);
+                drink.setInstructions(instructions);
+                drink.setAlcoholic(alcoholic);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
