@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".DrinkDetailActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/nameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ingredientsList"/>
+
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
@@ -13,11 +26,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="asdf"
+        android:text=""
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/ingredientsList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
@@ -42,11 +54,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientsList"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredientsList" />
 
-    <include layout="@layout/content_main" />
+        <include layout="@layout/content_main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -22,6 +23,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
     ArrayList<String> ingredientMeasureList;
     ListView ingredientsListView;
     TextView instructionsTextView;
+    ImageView imageView;
 
     DrinkDetailsAPI drinkDetailsAPI;
 
@@ -40,6 +42,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
 
         nameTextView = findViewById(R.id.nameTextView);
         ingredientsListView = findViewById(R.id.ingredientsList);
+        imageView = findViewById(R.id.imageView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
         ingredientMeasureList = new ArrayList<>();
 
@@ -71,6 +74,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
 
         nameTextView.setText(drink.getName() + " (" + drink.getAlcoholic() + ")");
         instructionsTextView.setText(drink.getInstructions());
+        imageView.setImageBitmap(drink.getImageReference());
 
         ArrayList<String> ingredientList = drink.getIngredients();
         ArrayList<String> measureList = drink.getMeasurements();
