@@ -1,5 +1,6 @@
 package com.toll.sam.pocketbartender;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -122,7 +123,7 @@ public class BrowseDrinksFragment extends Fragment {
          * @param n/a
          * @return n/a
          */
-        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             CardView myCardView1;
             TextView myText1;
 
@@ -139,20 +140,7 @@ public class BrowseDrinksFragment extends Fragment {
                 myText1 = itemView.findViewById(R.id.myText1);
 
                 // wire 'em up!!
-                //itemView.setOnClickListener(this);
-                //itemView.setOnLongClickListener(this);
-            }
-
-            @Override
-            public void onClick(View v) {
-                //open up the drink and display all the needed ingredients?
-            }
-
-            @Override
-            public boolean onLongClick(View v)
-            {
-                //do nothing?
-                return true;
+                itemView.setOnClickListener(this);
             }
 
             /*
@@ -183,6 +171,13 @@ public class BrowseDrinksFragment extends Fragment {
                     }
                     actionMode.setTitle(selectedItems.size() + " item(s) selected");
                 }
+            }
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), DrinkDetailActivity.class);
+                intent.putExtra("name", drinkList.get(getAdapterPosition()).getName());
+                startActivity(intent);
             }
         }
 

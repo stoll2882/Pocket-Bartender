@@ -267,7 +267,9 @@ public class FindDrinksFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getActivity(), DrinkDetailActivity.class);
+                intent.putExtra("name", drinkList.get(getAdapterPosition()).getName());
+                startActivity(intent);
             }
         }
 
