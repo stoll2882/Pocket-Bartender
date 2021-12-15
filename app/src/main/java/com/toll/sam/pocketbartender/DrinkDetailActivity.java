@@ -24,7 +24,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
     ListView ingredientsListView;
     TextView instructionsTextView;
     ImageView imageView;
-
+    TextView alcoholicTextView;
     DrinkDetailsAPI drinkDetailsAPI;
 
     private ArrayAdapter<String> ingredientsAdapter;
@@ -41,6 +41,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         nameTextView = findViewById(R.id.nameTextView);
+        alcoholicTextView = findViewById(R.id.alcoholicView);
         ingredientsListView = findViewById(R.id.ingredientsList);
         imageView = findViewById(R.id.imageView);
         instructionsTextView = findViewById(R.id.instructionsTextView);
@@ -72,10 +73,10 @@ public class DrinkDetailActivity extends AppCompatActivity {
     public void receivedDrink(Drink drink) {
         this.drink = drink;
 
-        nameTextView.setText(drink.getName() + " (" + drink.getAlcoholic() + ")");
+        nameTextView.setText(drink.getName());
         instructionsTextView.setText(drink.getInstructions());
         imageView.setImageBitmap(drink.getImageReference());
-
+        alcoholicTextView.setText(drink.getAlcoholic());
         ArrayList<String> ingredientList = drink.getIngredients();
         ArrayList<String> measureList = drink.getMeasurements();
 
