@@ -1,14 +1,18 @@
 package com.toll.sam.pocketbartender;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 public class Drink {
 
+    private String id;
     private String name;
     private ArrayList<String> ingredients = new ArrayList<>();
+    private ArrayList<String> measurements = new ArrayList<>();
     private String instructions;
     private String alcoholic;
-    private String imageReference;
+    private Bitmap imageReference;
 
     public Drink()
     {
@@ -16,35 +20,51 @@ public class Drink {
         ingredients = null;
     }
 
-    public Drink(String name)
-    {
+    public Drink(String id, String name, Bitmap imageReference) {
+        this.id = id;
         this.name = name;
-        this.ingredients = null;
+        this.imageReference = imageReference;
     }
 
-    public Drink(String name, ArrayList<String> ingredients) {
-        this.ingredients = ingredients;
+    public Drink(String id, String name, ArrayList<String> ingredients, ArrayList<String> measurements, String instructions, String alcoholic, Bitmap imageReference) {
+        this.id = id;
         this.name = name;
+        this.ingredients = ingredients;
+        this.measurements = measurements;
+        this.instructions = instructions;
+        this.alcoholic = alcoholic;
+        this.imageReference = imageReference;
     }
 
-    public Drink(String name, ArrayList<String> ingredients, String instructions) {
-        this.name = name;
-        this.ingredients = ingredients;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
 
-    public Drink(String name, ArrayList<String> ingredients, String instructions, String alcoholic) {
-        this.name = name;
-        this.ingredients = ingredients;
-        this.instructions = instructions;
+    public String getAlcoholic() {
+        return alcoholic;
+    }
+
+    public void setAlcoholic(String alcoholic) {
         this.alcoholic = alcoholic;
     }
 
-    public Drink(String name, ArrayList<String> ingredients, String instructions, String alcoholic, String imageReference) {
-        this.name = name;
-        this.ingredients = ingredients;
-        this.instructions = instructions;
-        this.alcoholic = alcoholic;
+    public Bitmap getImageReference() {
+        return imageReference;
+    }
+
+    public void setImageReference(Bitmap imageReference) {
         this.imageReference = imageReference;
     }
 

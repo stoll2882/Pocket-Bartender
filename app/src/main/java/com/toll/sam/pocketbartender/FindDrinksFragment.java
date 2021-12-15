@@ -1,5 +1,6 @@
 package com.toll.sam.pocketbartender;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -29,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,6 +66,8 @@ public class FindDrinksFragment extends Fragment {
 
     Button searchButton;
 
+    DrinkAPI drinkAPI;
+
     public FindDrinksFragment() {
         // Required empty public constructor
     }
@@ -93,13 +98,13 @@ public class FindDrinksFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        Drink drink1 = new Drink("drink1");
-        Drink drink2 = new Drink("drink2");
-        Drink drink3 = new Drink("drink3");
-        drinkList.add(drink1);
-        drinkList.add(drink2);
-        drinkList.add(drink3);
-        adapter.notifyDataSetChanged();
+//        Drink drink1 = new Drink("drink1");
+//        Drink drink2 = new Drink("drink2");
+//        Drink drink3 = new Drink("drink3");
+//        drinkList.add(drink1);
+//        drinkList.add(drink2);
+//        drinkList.add(drink3);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -113,6 +118,7 @@ public class FindDrinksFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listView = view.findViewById(R.id.ingredientsList);
         ingredientList = new ArrayList<>();
+        selectedIngredients = new ArrayList<>();
         ingredientsAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),  android.R.layout.simple_list_item_multiple_choice, ingredientList);
         listView.setAdapter(ingredientsAdapter);
         this.listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -122,13 +128,19 @@ public class FindDrinksFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                selectedIngredients = new ArrayList<>();
                 SparseBooleanArray indexs = listView.getCheckedItemPositions();
                 for (int i = 0; i < indexs.size(); i++) {
                     if (indexs.get(i)) {
                         selectedIngredients.add(ingredientList.get(i));
                     }
                 }
-
+                try {
+                    searchDrinks(selectedIngredients);
+//                    searchDrinks(new String[]{"gin"});
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.possibleDrinksView);
@@ -137,6 +149,11 @@ public class FindDrinksFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(adapter);
+    }
+
+    public void searchDrinks(List<String> ingredients) throws MalformedURLException {
+        drinkAPI = new DrinkAPI(this);
+        drinkAPI.fetchDrinks(ingredients);
     }
 
     private void getIngredientsList() {
@@ -176,6 +193,14 @@ public class FindDrinksFragment extends Fragment {
         queue.add(stringRequest);
     }
 
+    // Parameters: place
+    // Return: none
+    // starts PlaceDetailActivity
+    public void receivedDrinks(List<Drink> drinks) {
+        this.drinkList = drinks;
+        adapter.notifyDataSetChanged();
+    }
+
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
         boolean multiSelect = false;
         ActionMode actionMode;
@@ -191,6 +216,7 @@ public class FindDrinksFragment extends Fragment {
         class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             CardView myCardView1;
             TextView myText1;
+            ImageView myImage1;
 
             /*
              * constructor for each view in recycler view
@@ -203,6 +229,7 @@ public class FindDrinksFragment extends Fragment {
 
                 myCardView1 = itemView.findViewById(R.id.myCardView1);
                 myText1 = itemView.findViewById(R.id.myText1);
+                myImage1 = itemView.findViewById(R.id.imageView);
 
                 // wire 'em up!!
                 itemView.setOnClickListener(this);
@@ -216,6 +243,7 @@ public class FindDrinksFragment extends Fragment {
             public void updateView(Drink d) {
                 myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
                 myText1.setText(d.getName());
+                myImage1.setImageBitmap(d.getImageReference());
             }
 
             /*

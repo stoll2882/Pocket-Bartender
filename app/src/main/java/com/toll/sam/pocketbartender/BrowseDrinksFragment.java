@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class BrowseDrinksFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private List<Drink> drinkList = new ArrayList<>();
+
+    BrowseDrinksAPI drinkAPI;
     public BrowseDrinksFragment() {
         // Required empty public constructor
     }
@@ -66,6 +69,19 @@ public class BrowseDrinksFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        drinkAPI = new BrowseDrinksAPI(this);
+
+        Button refreshButton = view.findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    searchDrinks();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -75,23 +91,6 @@ public class BrowseDrinksFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        Drink drink1 = new Drink("drink1");
-        Drink drink2 = new Drink("drink2");
-        Drink drink3 = new Drink("drink3");
-        drinkList.add(drink1);
-        drinkList.add(drink2);
-        drinkList.add(drink3);
-        adapter.notifyDataSetChanged();
-        /*
-        //not sure where to put this
-        Button refreshButton = findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //make a request for more drinks to fill recycler view
-            }
-        });
-        */
     }
 
     @Override
@@ -99,6 +98,16 @@ public class BrowseDrinksFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_browse_drinks, container, false);
+    }
+
+    public void searchDrinks() throws MalformedURLException {
+        drinkAPI = new BrowseDrinksAPI(this);
+        drinkAPI.fetchDrinks();
+    }
+
+    public void receivedDrinks(List<Drink> drinks) {
+        this.drinkList = drinks;
+        adapter.notifyDataSetChanged();
     }
 
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
