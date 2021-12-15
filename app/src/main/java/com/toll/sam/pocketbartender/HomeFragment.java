@@ -1,12 +1,24 @@
 package com.toll.sam.pocketbartender;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 //testing branch
 /**
@@ -16,6 +28,8 @@ import android.view.ViewGroup;
  */
 public class HomeFragment extends Fragment {
 
+    private final String CHANNEL_ID = "abg83jfb";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -24,10 +38,14 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private DrinkDetailActivity DrinkDetailActivity;
 
     public HomeFragment() {
         // Required empty public constructor
     }
+
+    ImageView imageView;
+    Button notificationButton;
 
     /**
      * Use this factory method to create a new instance of
@@ -61,5 +79,34 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        imageView = view.findViewById(R.id.imageView);
+        notificationButton = view.findViewById(R.id.notificationButton);
+
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendNotification();
+            }
+        });
+    }
+
+    private void sendNotification() {
+        Intent notificationIntent = new Intent();
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, notificationIntent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT).setSmallIcon(R.drawable.star)
+                .setContentTitle("Here is a new drink to try!")
+                .setContentText("Click to try a new drink today.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
+        notificationManager.notify(1, mBuilder.build());
     }
 }
