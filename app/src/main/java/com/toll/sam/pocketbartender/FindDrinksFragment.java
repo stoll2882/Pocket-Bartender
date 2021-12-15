@@ -1,8 +1,13 @@
 package com.toll.sam.pocketbartender;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -68,6 +73,8 @@ public class FindDrinksFragment extends Fragment {
 
     DrinkAPI drinkAPI;
 
+    ActivityResultLauncher<Intent> launcher;
+
     public FindDrinksFragment() {
         // Required empty public constructor
     }
@@ -97,14 +104,6 @@ public class FindDrinksFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-//        Drink drink1 = new Drink("drink1");
-//        Drink drink2 = new Drink("drink2");
-//        Drink drink3 = new Drink("drink3");
-//        drinkList.add(drink1);
-//        drinkList.add(drink2);
-//        drinkList.add(drink3);
-//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -149,6 +148,21 @@ public class FindDrinksFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(adapter);
+
+        // setup launcher for receiving intent / result back from VideoDetailActivity
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+//                        Log.d(TAG, "onActivityResult: ");
+                        // this callback executes when MainActivity returns from
+                        // starting an activity (e.g. SecondActivity) that was
+                        // started for a result
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            System.out.println("success");
+                        }
+                    }
+                });
     }
 
     public void searchDrinks(List<String> ingredients) throws MalformedURLException {
@@ -267,7 +281,16 @@ public class FindDrinksFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
+                selectItem(drinkList.get(getAdapterPosition()));
 
+                Drink currDrink = drinkList.get(getAdapterPosition());
+
+                if (currDrink != null) {
+                    Intent intent = new Intent(getActivity(), DrinkDetailActivity.class);
+                    String id = currDrink.getId();
+                    intent.putExtra("id", id);
+                    launcher.launch(intent);
+                }
             }
         }
 

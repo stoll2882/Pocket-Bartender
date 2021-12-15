@@ -1,7 +1,13 @@
 package com.toll.sam.pocketbartender;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -9,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -16,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +48,8 @@ public class BrowseDrinksFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private List<Drink> drinkList = new ArrayList<>();
+
+    ActivityResultLauncher<Intent> launcher;
 
     BrowseDrinksAPI drinkAPI;
     public BrowseDrinksFragment() {
@@ -82,6 +92,21 @@ public class BrowseDrinksFragment extends Fragment {
                 }
             }
         });
+
+        // setup launcher for receiving intent / result back from VideoDetailActivity
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+//                        Log.d(TAG, "onActivityResult: ");
+                        // this callback executes when MainActivity returns from
+                        // starting an activity (e.g. SecondActivity) that was
+                        // started for a result
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            System.out.println("success");
+                        }
+                    }
+                });
     }
 
     @Override
@@ -122,9 +147,10 @@ public class BrowseDrinksFragment extends Fragment {
          * @param n/a
          * @return n/a
          */
-        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             CardView myCardView1;
             TextView myText1;
+            ImageView myImage1;
 
             /*
              * constructor for each view in recycler view
@@ -137,24 +163,11 @@ public class BrowseDrinksFragment extends Fragment {
 
                 myCardView1 = itemView.findViewById(R.id.myCardView1);
                 myText1 = itemView.findViewById(R.id.myText1);
+                myImage1 = itemView.findViewById(R.id.imageView);
 
                 // wire 'em up!!
-                //itemView.setOnClickListener(this);
-                //itemView.setOnLongClickListener(this);
+                itemView.setOnClickListener(this);
             }
-
-            @Override
-            public void onClick(View v) {
-                //open up the drink and display all the needed ingredients?
-            }
-
-            @Override
-            public boolean onLongClick(View v)
-            {
-                //do nothing?
-                return true;
-            }
-
             /*
              * updates the view in the recycler view
              *
@@ -164,6 +177,7 @@ public class BrowseDrinksFragment extends Fragment {
             public void updateView(Drink d) {
                 myCardView1.setCardBackgroundColor(getResources().getColor(R.color.white));
                 myText1.setText(d.getName());
+                myImage1.setImageBitmap(d.getImageReference());
             }
 
             /*
@@ -182,6 +196,20 @@ public class BrowseDrinksFragment extends Fragment {
                         myCardView1.setCardBackgroundColor(getResources().getColor(R.color.teal_200));
                     }
                     actionMode.setTitle(selectedItems.size() + " item(s) selected");
+                }
+            }
+
+            @Override
+            public void onClick(View view) {
+                selectItem(drinkList.get(getAdapterPosition()));
+
+                Drink currDrink = drinkList.get(getAdapterPosition());
+
+                if (currDrink != null) {
+                    Intent intent = new Intent(getActivity(), DrinkDetailActivity.class);
+                    String id = currDrink.getId();
+                    intent.putExtra("id", id);
+                    launcher.launch(intent);
                 }
             }
         }

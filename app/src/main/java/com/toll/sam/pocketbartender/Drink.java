@@ -108,4 +108,8 @@ public class Drink {
     public void setIngredients(ArrayList<String> ingredients) {
         this.ingredients = ingredients;
     }
+
+    public ArrayList<String> getMeasurements() {
+        return measurements;
+    }
 }
