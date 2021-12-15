@@ -211,7 +211,11 @@ public class FindDrinksFragment extends Fragment {
     // Return: none
     // starts PlaceDetailActivity
     public void receivedDrinks(List<Drink> drinks) {
-        this.drinkList = drinks;
+        if (drinks != null) {
+            this.drinkList = drinks;
+        } else {
+            this.drinkList = new ArrayList<>();
+        }
         adapter.notifyDataSetChanged();
     }
 
