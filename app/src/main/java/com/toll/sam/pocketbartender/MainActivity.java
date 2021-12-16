@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -28,8 +29,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    private final String CHANNEL_ID = "abg83jfb";
+    public static final String CHANNEL_ID = "abg83jfb";
 
     BottomNavigationView bottomNavigationView;
 
@@ -47,14 +50,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-//
-//        Button getDrinkButton = findViewById(R.id.getDrinkButton);
-//        getDrinkButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getDrink();
-//            }
-//        });
+
     }
 
     @Override
@@ -145,6 +141,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+
+            setupDailyCall();
         }
+    }
+
+    private void setupDailyCall() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(23), Integer.valueOf(41));
+
+        Intent intent = new Intent(this, AlarmHandler.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 }
